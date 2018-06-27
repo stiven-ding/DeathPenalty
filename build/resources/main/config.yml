@@ -1,23 +1,23 @@
 #掉落钱  可以为固定值也可以为百分比
 Money: '10%'
 #掉落经验  可以为固定值也可以为百分比
-Exp: '10%'
+Exp: '30%'
 #掉落物品  固定值整数
-Item: 6
+Item: 4
 #经验掉落后，是否产生经验球
 Summonxp: true
-#物品掉落忽略物品，只能使用数字ID
+#物品掉落忽略物品，目前暂只能指定一个
 Bypass: 
 - '387'
 - '264'
 #死亡buff设置
 Buff:
   #迟缓状态持续时间
-  SlowTime: 5
+  SlowTime: 120
   #失明状态持续时间
-  BlindnessTime: 5
+  BlindnessTime: 120
   #反胃状态持续时间
-  ConfusionTime: 5
+  ConfusionTime: 120
 Message:
   DeathDrop: '§d 死亡惩罚 §c§l>> §e你因为死亡掉落了: '
   Money: '$'

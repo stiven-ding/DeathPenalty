@@ -1,0 +1,35 @@
+name: DeathPenalty
+version: ${project.version}
+description: The Death Penalty Plugin
+author: sfcraft.net
+main: net.sfcraft.plugins.deathpenalty.DeathPenalty
+softdepend: [LangUtils, Vault]
+commands:
+  DeathPenalty:
+   description: DeathPenalty Command
+   aliases: dp
+permissions:
+  DeathPenalty.*:
+    description: Gives access to all DeathPenalty actions and commands
+    default: op
+    children:
+      DeathPenalty.reload: true
+      DeathPenalty.item: true
+      DeathPenalty.money: true
+      DeathPenalty.exp: true
+      DeathPenalty.buff: true
+  DeathPenalty.reload:
+    description: Has permission to use the reload command
+    default: op
+  DeathPenalty.item:
+    description: Has permission to keep inventory in death
+    default: op
+  DeathPenalty.money:
+    description: Has permission to keep money in death
+    default: op
+  DeathPenalty.exp:
+    description: Has permission to keep EXP in death
+    default: op
+  DeathPenalty.buff:
+    description: Has permission to Immune debuff at the time of respawn
+    default: op

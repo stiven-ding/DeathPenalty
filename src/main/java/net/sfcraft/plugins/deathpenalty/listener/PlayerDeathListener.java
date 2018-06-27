@@ -36,27 +36,32 @@ public class PlayerDeathListener implements Listener {
 		List<String> noPluginWorlds = plugin.getSetting().getWorlds();
 		String playerWorld = player.getWorld().getName();
 		for (String string : noPluginWorlds) {
-			if(string.equalsIgnoreCase(playerWorld)){
+			if (string.equalsIgnoreCase(playerWorld)) {
 				return;
 			}
 		}
-		event.setKeepInventory(true);	//设置死亡不掉落
+		event.setKeepInventory(true); // 设置死亡不掉落
 		List<ItemStack> dropItem = dropItem(player, event);
 		double dropMoney = dropMoney(player);
 		int droppedExp = dropExp(player, event);
-		if((dropItem != null && !dropItem.isEmpty()) || dropMoney != 0 || droppedExp != 0){
-			player.sendMessage(plugin.getSetting().getMessage_deathDrop());
-			if(dropItem != null && !dropItem.isEmpty())
+
+		String message = plugin.getSetting().getMessage_deathDrop();
+		if ((dropItem != null && !dropItem.isEmpty()) || dropMoney != 0 || droppedExp != 0) {
+			if (dropMoney != 0) {
+				message += "§r" + plugin.getSetting().getMessage_money() + "§b" + (int) dropMoney + "§r， ";
+			}
+			if (droppedExp != 0)
+				message += "§b" + droppedExp + " §r" + plugin.getSetting().getMessage_exp() + "§r， ";
+
+			if (dropItem != null && !dropItem.isEmpty())
 				for (ItemStack itemStack : dropItem) {
-					String itemName = haveLanguageUtils ? LanguageHelper.getItemDisplayName(itemStack, locale) : itemStack.getType().name();
-					player.sendMessage(StringUtil.appendStr("§a", itemName, "§r : ", itemStack.getAmount()));
+					String itemName = haveLanguageUtils ? LanguageHelper.getItemDisplayName(itemStack, locale)
+							: itemStack.getType().name();
+					message += "§b" + itemStack.getAmount() + " §r" + itemName + "§r， ";
 				}
-			if(dropMoney != 0)
-				player.sendMessage(StringUtil.appendStr("§a", plugin.getSetting().getMessage_money(),"§r : ", dropMoney));
-			if(droppedExp != 0)
-				player.sendMessage(StringUtil.appendStr("§a", plugin.getSetting().getMessage_exp(),"§r : ", droppedExp));
+			player.sendMessage(message.substring(0, message.length() - 2));
 		}
-		
+
 	}
 
 	/**
@@ -71,30 +76,49 @@ public class PlayerDeathListener implements Listener {
 		}
 		int dropItemAcount = event.getDrops().size();
 		int dropItemNum = plugin.getSetting().getItem(); // 掉落物品格数
-		if(dropItemNum == 0){
+		if (dropItemNum == 0) {
 			return null;
 		}
+		List<String> bypassItems = plugin.getSetting().getBypass();
 		List<ItemStack> dropItems = new ArrayList<ItemStack>();
+		int times = 0;
 		if (dropItemNum >= dropItemAcount) {
 			dropItems = event.getDrops();
 		} else {
-			while (true) {
-				if (dropItems.size() == dropItemNum || dropItems.size() == dropItemAcount) {
-					break;
-				}
+			while (dropItems.size() < dropItemNum) {
 				int randomNumber = (int) Math.round(Math.random() * (dropItemAcount - 1));
 				ItemStack dropItem = event.getDrops().get(randomNumber);
 				if (!dropItems.contains(dropItem)) {
 					dropItems.add(dropItem);
 				}
+				if (++times > dropItemNum * 2) {
+					break;
+				} // 防止背包里有大量相同物品，导致取不够掉落物，死循环的BUG
 			}
 		}
-		HashMap<Integer, ItemStack> a = player.getInventory().removeItem(dropItems.toArray(new ItemStack[dropItems.size()]));
-		dropItems.removeAll(a.values());	//装备栏的物品没法删除，只好不掉落了
+
+		Bukkit.getLogger().info("[DeathPenalty] Drop list got after " + times + " times");
+
 		Location location = player.getLocation();
-		for (ItemStack itemStack : dropItems) {
-	        location.getWorld().dropItemNaturally(location, itemStack);//掉落物品
+		for (int i = 0; i < dropItems.size(); i++) {
+			ItemStack temp = dropItems.get(i);
+			boolean bypass = false;
+			for (String item : bypassItems)
+				if (Integer.parseInt(item) == temp.getTypeId()) {
+					bypass = true;
+				}
+			if (bypass) {
+				Bukkit.getLogger().info("[DeathPenalty] Found " + temp.getTypeId() + " at " + i + "/" + dropItems.size()
+						+ ", delete it");
+				dropItems.remove(temp);
+				i--;
+			}
 		}
+		HashMap<Integer, ItemStack> a = player.getInventory()
+				.removeItem(dropItems.toArray(new ItemStack[dropItems.size()]));
+		dropItems.removeAll(a.values()); // 装备栏的物品没法删除，不生成掉落物防止刷物品
+		for (ItemStack temp : dropItems)
+			location.getWorld().dropItemNaturally(location, temp);// 生成掉落物
 		return dropItems;
 	}
 
@@ -108,13 +132,13 @@ public class PlayerDeathListener implements Listener {
 		if (player.hasPermission("DeathPenalty.money") || player.isOp()) {
 			return 0;
 		}
-		if(this.economy == null){
+		if (this.economy == null) {
 			return 0;
 		}
 		double playerMoney = this.economy.getBalance(player);
 		String dropMoneySetting = plugin.getSetting().getMoney();
 		double dropMoney = 0;
-		if(dropMoneySetting.indexOf("%") != -1){
+		if (dropMoneySetting.indexOf("%") != -1) {
 			dropMoney = playerMoney * Double.parseDouble(dropMoneySetting.replace("%", "")) / 100;
 		} else {
 			dropMoney = Double.parseDouble(dropMoneySetting);
@@ -129,6 +153,7 @@ public class PlayerDeathListener implements Listener {
 
 	/**
 	 * 掉落经验
+	 * 
 	 * @param player
 	 * @param event
 	 * @return
@@ -142,13 +167,18 @@ public class PlayerDeathListener implements Listener {
 		int totalExp = player.getTotalExperience();
 		int droppedExp = 0;
 		String dropExpSetting = plugin.getSetting().getExp();
-		if(dropExpSetting.indexOf("%") != -1){
-			droppedExp = (int)(totalExp * Double.parseDouble(dropExpSetting.replace("%", ""))) / 100;
+		if (dropExpSetting.indexOf("%") != -1) {
+			droppedExp = (int) (totalExp * Double.parseDouble(dropExpSetting.replace("%", ""))) / 100;
 		} else {
 			droppedExp = Integer.parseInt(dropExpSetting);
 		}
-		event.setDroppedExp(droppedExp);
-		event.setNewExp(totalExp - droppedExp);
+		if (plugin.getSetting().getSummonxp() == true)
+			event.setDroppedExp(totalExp - droppedExp);
+		else
+			event.setDroppedExp(0);
+		// event.setNewExp(totalExp - droppedExp); 原命令可能导致刷经验，改用Ess命令
+		Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+				"exp set " + player.getName() + " " + String.valueOf(totalExp - droppedExp));
 		return droppedExp;
 	}
 }

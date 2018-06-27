@@ -4,17 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeathPenaltySetting {
-	private String money = "100";		//掉落金额
-	private String exp = "30%";		//掉落经验
-	private int item = 2;			//掉落物品格数
+	private String money = "10%";		//掉落金额
+	private String exp = "10%";		//掉落经验
+	private int item = 4;			//掉落物品格数
 	private int buff_slow = 120;		//缓慢状态持续时间
 	private int buff_blindness = 120;	//失明状态持续时间
-	private int buff_confusion = 120;	//反胃状态持续时间
+	private int buff_confusion = 120;	//反胃状态持续时间+
+	private List<String> bypass_item = new ArrayList<String>();
 	private List<String> worlds = new ArrayList<String>();	//插件不生效的世界名集合
-	private String message_deathDrop = "§d你因为死亡掉落了:";
-	private String message_money = "钱";
+	private String message_deathDrop = "§d 死亡惩罚 §c§l>> §d你因为死亡掉落了:";
+	private String message_money = "$";
 	private String message_exp = "经验";
-	private String message_givebuff = "§d重生后你感到非常虚弱.";
+	private String message_givebuff = "§d 死亡惩罚 §c§l>> §d重生后你感到非常虚弱.";
+	private Boolean summonxp = false;
 	public String getMoney() {
 		return money;
 	}
@@ -80,5 +82,17 @@ public class DeathPenaltySetting {
 	}
 	public void setMessage_givebuff(String message_givebuff) {
 		this.message_givebuff = message_givebuff;
+	}
+	public void setSummonxp(Boolean drop) {
+		summonxp = drop;
+	}
+	public Boolean getSummonxp() {
+		return summonxp;
+	}
+	public void setBypass(List<String> bypass) {
+		bypass_item = bypass;
+	}
+	public List<String> getBypass() {
+		return bypass_item;
 	}
 }

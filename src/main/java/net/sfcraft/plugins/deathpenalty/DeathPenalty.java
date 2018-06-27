@@ -92,6 +92,10 @@ public class DeathPenalty extends JavaPlugin {
 		setting.setMessage_exp(message_exp);
 		String message_givebuff = config.getString("Message.GiveBuff");
 		setting.setMessage_givebuff(message_givebuff);
+		Boolean summonxp = config.getBoolean("Summonxp");
+		setting.setSummonxp(summonxp);
+		List<String> bypass_item = config.getStringList("Worlds");
+		setting.setBypass(worlds);
 		if(needNewConfig){
 			saveConfig();
 		}
