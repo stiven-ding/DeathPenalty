@@ -1,9 +1,9 @@
 name: DeathPenalty
-version: ${project.version}
+version: V5.0
 description: The Death Penalty Plugin
-author: sfcraft.net
+author: [Stiven D., sfcraft.net]
 main: net.sfcraft.plugins.deathpenalty.DeathPenalty
-softdepend: [LangUtils, Vault]
+softdepend: [Essentials, LangUtils, Vault]
 commands:
   DeathPenalty:
    description: DeathPenalty Command
