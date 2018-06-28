@@ -24,10 +24,11 @@ Buff:
   #反胃状态持续时间
   ConfusionTime: 5
 Message:
-  DeathDrop: '§d 死亡惩罚 §c§l>> §e你因为死亡掉落了: '
+  Head: '§d 死亡惩罚 §c§l>> '
+  DeathDrop: '§e你因为死亡掉落了: '
   Money: '$'
   Exp: '经验'
-  GiveBuff: '§d 死亡惩罚 §c§l>> §e重生后的一分钟内你感到非常又饿又晕.'
+  GiveBuff: '§e重生后的一分钟内你感到非常又饿又晕.'
 #多世界设置  注意！这里是不启用插件的世界名
 Worlds:
 - Example

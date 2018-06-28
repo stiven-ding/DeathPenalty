@@ -1,6 +1,6 @@
-name: DeathPenalty
-version: V5.0
-description: The Death Penalty Plugin
+name: DeathPenaltyRel
+version: V5.1
+description: The Death Penalty Plugin Reloaded
 author: [Stiven D., sfcraft.net]
 main: net.sfcraft.plugins.deathpenalty.DeathPenalty
 softdepend: [Essentials, LangUtils, Vault]

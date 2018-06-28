@@ -17,7 +17,6 @@ import com.meowj.langutils.locale.LocaleHelper;
 
 import net.milkbowl.vault.economy.Economy;
 import net.sfcraft.plugins.deathpenalty.DeathPenalty;
-import net.sfcraft.plugins.deathpenalty.util.StringUtil;
 
 public class PlayerDeathListener implements Listener {
 	private final DeathPenalty plugin;
@@ -45,21 +44,25 @@ public class PlayerDeathListener implements Listener {
 		double dropMoney = dropMoney(player);
 		int droppedExp = dropExp(player, event);
 
-		String message = plugin.getSetting().getMessage_deathDrop();
+		String message = plugin.getSetting().getMessage_head() + plugin.getSetting().getMessage_deathDrop();
 		if ((dropItem != null && !dropItem.isEmpty()) || dropMoney != 0 || droppedExp != 0) {
-			if (dropMoney != 0) {
+			if ((int) dropMoney != 0) {
 				message += "§r" + plugin.getSetting().getMessage_money() + "§b" + (int) dropMoney + "§r， ";
 			}
 			if (droppedExp != 0)
 				message += "§b" + droppedExp + " §r" + plugin.getSetting().getMessage_exp() + "§r， ";
 
-			if (dropItem != null && !dropItem.isEmpty())
+			player.sendMessage(message.substring(0, message.length() - 2));
+
+			if (dropItem != null && !dropItem.isEmpty()) {
+				message = plugin.getSetting().getMessage_head();
 				for (ItemStack itemStack : dropItem) {
 					String itemName = haveLanguageUtils ? LanguageHelper.getItemDisplayName(itemStack, locale)
 							: itemStack.getType().name();
 					message += "§b" + itemStack.getAmount() + " §r" + itemName + "§r， ";
 				}
-			player.sendMessage(message.substring(0, message.length() - 2));
+				player.sendMessage(message.substring(0, message.length() - 2));
+			}
 		}
 
 	}

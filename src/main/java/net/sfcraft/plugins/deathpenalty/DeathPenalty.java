@@ -16,7 +16,6 @@ import net.sfcraft.plugins.deathpenalty.config.DeathPenaltySetting;
 import net.sfcraft.plugins.deathpenalty.listener.CommandManager;
 import net.sfcraft.plugins.deathpenalty.listener.PlayerDeathListener;
 import net.sfcraft.plugins.deathpenalty.listener.PlayerRespawnListener;
-import net.sfcraft.plugins.deathpenalty.util.StringUtil;
 
 public class DeathPenalty extends JavaPlugin {
 	private DeathPenaltySetting setting;
@@ -36,7 +35,7 @@ public class DeathPenalty extends JavaPlugin {
         pm.registerEvents(deathListener, this);
         pm.registerEvents(respawnListener, this);
         getCommand("DeathPenalty").setExecutor(new CommandManager(this));
-		getLogger().info(StringUtil.appendStr(getDescription().getName(), " V", getDescription().getVersion(), " Has Been Enabled"));
+		getLogger().info(getDescription().getName() + " V" +  getDescription().getVersion() + " Has Been Enabled");
 	}
 
 	/**
@@ -45,7 +44,7 @@ public class DeathPenalty extends JavaPlugin {
 	public void onDisable() {
 		PlayerDeathEvent.getHandlerList().unregister(deathListener);
 		PlayerRespawnEvent.getHandlerList().unregister(respawnListener);
-		getLogger().info(StringUtil.appendStr(getDescription().getName(), " V", getDescription().getVersion(), " Has Been Disabled"));
+		getLogger().info(getDescription().getName() + " V" +  getDescription().getVersion() + " Has Been Disabled");
 	}
 
 	/**
@@ -92,10 +91,12 @@ public class DeathPenalty extends JavaPlugin {
 		setting.setMessage_exp(message_exp);
 		String message_givebuff = config.getString("Message.GiveBuff");
 		setting.setMessage_givebuff(message_givebuff);
+		String message_head = config.getString("Message.Head");
+		setting.setMessage_head(message_head);
 		Boolean summonxp = config.getBoolean("Summonxp");
 		setting.setSummonxp(summonxp);
-		List<String> bypass_item = config.getStringList("Worlds");
-		setting.setBypass(worlds);
+		List<String> bypass_item = config.getStringList("Bypass");
+		setting.setBypass(bypass_item);
 		if(needNewConfig){
 			saveConfig();
 		}

@@ -12,6 +12,7 @@ public class DeathPenaltySetting {
 	private int buff_confusion = 120;	//反胃状态持续时间+
 	private List<String> bypass_item = new ArrayList<String>();
 	private List<String> worlds = new ArrayList<String>();	//插件不生效的世界名集合
+	private String message_head = "§d 死亡惩罚 §c§l>> ";
 	private String message_deathDrop = "§d 死亡惩罚 §c§l>> §d你因为死亡掉落了:";
 	private String message_money = "$";
 	private String message_exp = "经验";
@@ -70,6 +71,12 @@ public class DeathPenaltySetting {
 	}
 	public void setMessage_money(String message_money) {
 		this.message_money = message_money;
+	}
+	public String getMessage_head() {
+		return message_head;
+	}
+	public void setMessage_head(String message_head) {
+		this.message_head = message_head;
 	}
 	public String getMessage_exp() {
 		return message_exp;
