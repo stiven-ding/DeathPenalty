@@ -49,7 +49,7 @@ public class PlayerRespawnListener implements Listener {
 				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, SLOW_TIME * 20, 1));
 				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, BLINDNESS_TIME * 20, 1));
 				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, CONFUSION_TIME * 20, 1));
-				player.sendMessage(plugin.getSetting().getMessage_givebuff());
+				player.sendMessage(plugin.getSetting().getMessage_head() + plugin.getSetting().getMessage_givebuff());
 			}
 		}.runTaskLater(plugin, 10L);
 	}
