@@ -95,6 +95,8 @@ public class DeathPenalty extends JavaPlugin {
 		setting.setMessage_head(message_head);
 		Boolean summonxp = config.getBoolean("Summonxp");
 		setting.setSummonxp(summonxp);
+		Boolean broadcast = config.getBoolean("Broadcast");
+		setting.setBroadcast(broadcast);
 		List<String> bypass_item = config.getStringList("Bypass");
 		setting.setBypass(bypass_item);
 		if(needNewConfig){

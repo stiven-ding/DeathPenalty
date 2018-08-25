@@ -18,6 +18,8 @@ public class DeathPenaltySetting {
 	private String message_exp = "经验";
 	private String message_givebuff = "§d 死亡惩罚 §c§l>> §d重生后你感到非常虚弱.";
 	private Boolean summonxp = false;
+	private Boolean broadcast = true;
+
 	public String getMoney() {
 		return money;
 	}
@@ -90,8 +92,8 @@ public class DeathPenaltySetting {
 	public void setMessage_givebuff(String message_givebuff) {
 		this.message_givebuff = message_givebuff;
 	}
-	public void setSummonxp(Boolean drop) {
-		summonxp = drop;
+	public void setSummonxp(Boolean summonxp) {
+		this.summonxp = summonxp;
 	}
 	public Boolean getSummonxp() {
 		return summonxp;
@@ -101,5 +103,11 @@ public class DeathPenaltySetting {
 	}
 	public List<String> getBypass() {
 		return bypass_item;
+	}
+	public void setBroadcast(Boolean broadcast) {
+		this.broadcast = broadcast;
+	}
+	public Boolean getBroadcast() {
+		return broadcast;
 	}
 }

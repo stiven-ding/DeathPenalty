@@ -11,6 +11,8 @@ Exp: '10%'
 Item: 6
 #经验掉落后，是否产生经验球
 Summonxp: true
+#死亡掉落物品是否公告
+Broadcast: true
 #物品掉落忽略物品，只能使用数字ID
 Bypass: 
 - '387'
@@ -25,7 +27,7 @@ Buff:
   ConfusionTime: 5
 Message:
   Head: '§d 死亡惩罚 §c§l>> '
-  DeathDrop: '§e你因为死亡掉落了: '
+  DeathDrop: '§e%player% 因死亡掉落: '
   Money: '$'
   Exp: '经验'
   GiveBuff: '§e重生后的一分钟内你感到非常又饿又晕.'
